@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {HomeScreen} from './Home/HomeScreen';
@@ -10,6 +10,7 @@ import {ProfileScreen} from './Profile/ProfileScreen';
 import {SignInScreen} from './Auth/SignIn/SignInScreen';
 import {SignUpScreen} from './Auth/SignUp/SignUpScreen';
 import {ResetPasswordScreen} from './Auth/ResetPassword/ResetPasswordScreen';
+import {useAppSelector} from '../common/hooks/hooks';
 
 
 const Tab = createBottomTabNavigator<BottomTabParamList>();
@@ -17,7 +18,7 @@ const Stack = createNativeStackNavigator<AuthStackParamList>();
 
 export const Main = () => {
 
-    const [isSignedIn, setIsSignedIn] = useState(false)
+    const isSignedIn = useAppSelector(state => state.auth.isSignedIn)
 
     return (
         <View style={styles.container}>
