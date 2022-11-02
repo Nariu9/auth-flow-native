@@ -1,15 +1,26 @@
 import {useState} from 'react';
-import {Button, StyleSheet, TextInput, View} from 'react-native';
-import {commonStyles} from '../../../common/styles/commonStyles';
+import {Alert, Button, StyleSheet, TextInput, View} from 'react-native';
+import {commonStyles} from '../../../common/styles/styles';
+import {useAppDispatch} from '../../../common/hooks/hooks';
+import {signUp} from '../../../store/authSlice';
+import {useAppNavigation} from '../../types';
 
 export function SignUpScreen() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [passwordConfirm, setPasswordConfirm] = useState('');
 
-    // const { signIn } = React.useContext(AuthContext);
-    const signUp = () => {
+    const dispatch = useAppDispatch()
+    const navigation = useAppNavigation()
 
+    const signUpHandler = () => {
+        if (password.trim() !== '' && passwordConfirm.trim() !== '' && email.trim() !== '' && password === passwordConfirm) {
+            dispatch(signUp({email, password}))
+            Alert.alert('You have successfully registered')
+            navigation.navigate('SignIn')
+        } else {
+            Alert.alert('Passwords do not match')
+        }
     }
 
     return (
@@ -17,10 +28,10 @@ export function SignUpScreen() {
             <View style={styles.form}>
                 <TextInput
                     style={commonStyles.input}
-                placeholder="Email"
-                value={email}
-                onChangeText={setEmail}
-            />
+                    placeholder="Email"
+                    value={email}
+                    onChangeText={setEmail}
+                />
                 <TextInput
                     style={commonStyles.input}
                     placeholder="Password"
@@ -35,7 +46,7 @@ export function SignUpScreen() {
                     onChangeText={setPasswordConfirm}
                     secureTextEntry
                 />
-                <Button title="Sign up" onPress={signUp}/></View>
+                <Button title="Sign up" onPress={signUpHandler}/></View>
         </View>
     );
 }
@@ -46,7 +57,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#c2a8f6',
     },
     form: {
-        marginTop: 200,
+        marginTop: 145,
         height: 210,
         justifyContent: 'space-between',
         alignItems: 'center'
