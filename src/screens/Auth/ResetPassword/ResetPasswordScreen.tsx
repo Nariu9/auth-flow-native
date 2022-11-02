@@ -1,13 +1,20 @@
 import {useState} from 'react';
-import {Button, StyleSheet, TextInput, View} from 'react-native';
-import {commonStyles} from '../../../common/styles/commonStyles';
+import {Alert, Button, StyleSheet, TextInput, View} from 'react-native';
+import {commonStyles} from '../../../common/styles/styles';
+import {useAppSelector} from '../../../common/hooks/hooks';
+import {useAppNavigation} from '../../types';
 
 export function ResetPasswordScreen() {
     const [email, setEmail] = useState('');
 
+    const password = useAppSelector(state => state.auth.password)
+    const navigation = useAppNavigation()
 
-    const resetPass = () => {
-
+    const resetPassHandler = () => {
+        if (email.trim() !== '') {
+            Alert.alert(`Your password is ${password}`)
+            navigation.navigate('SignIn')
+        }
     }
 
     return (
@@ -19,7 +26,7 @@ export function ResetPasswordScreen() {
                     value={email}
                     onChangeText={setEmail}
                 />
-                <Button title="Reset password" onPress={resetPass}/>
+                <Button title="Reset password" onPress={resetPassHandler}/>
             </View>
         </View>
     );
@@ -31,7 +38,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#f1bfbf',
     },
     form: {
-        marginTop: 250,
+        marginTop: 255,
         height: 100,
         justifyContent: 'space-between',
         alignItems: 'center'
