@@ -1,15 +1,20 @@
 import {useState} from 'react';
 import {Button, StyleSheet, TextInput, View} from 'react-native';
 import {useAppNavigation} from '../../types';
-import {commonStyles} from '../../../common/styles/commonStyles';
+import {commonStyles} from '../../../common/styles/styles';
+import {useAppDispatch} from '../../../common/hooks/hooks';
+import {signIn} from '../../../store/authSlice';
 
 export function SignInScreen() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    // const { signIn } = React.useContext(AuthContext);
-    const signIn = () => {
+    const dispatch = useAppDispatch()
 
+    const signInHandler = () => {
+        if (email.trim() !== '' && password.trim() !== '') {
+            dispatch(signIn({email, password}))
+        }
     }
 
     const navigation = useAppNavigation()
@@ -38,7 +43,7 @@ export function SignInScreen() {
                     onChangeText={setPassword}
                     secureTextEntry
                 />
-                <Button title="Sign in" onPress={signIn}/></View>
+                <Button title="Sign in" onPress={signInHandler}/></View>
         </View>
     );
 }
@@ -55,7 +60,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around'
     },
     form: {
-        marginTop: 175,
+        marginTop: 130,
         height: 150,
         justifyContent: 'space-between',
         alignItems: 'center'
